@@ -9,3 +9,8 @@ repository = "https://github.com/fowl-ow/fsh"
 
 [dependencies]
 nix = { version = "0.31.1", features = ["fs"] }
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
