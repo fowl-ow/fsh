@@ -1,16 +1,23 @@
 # fsh (fowl shell)
 
-This is a rust learning project with the initial goal of building a POSIX compliant shell.
+This is a learning project with the goal of building a small shell in Rust, based on the [codecrafters challenge](https://app.codecrafters.io/courses/shell/overview).
 
 ## Features
 
-- Command execution (built-in and path) with basic argument handling (separation by whitespace only)
-- Supported built-in commands
+- Basic REPL (Read-Eval-Print-Loop) with command execution (built-in and path), argument handling (separation by whitespace only)
+- Supported built-in commands:
   - `echo`
   - `exit`
   - `type`
 
-## Project Roadmap
+## Roadmap
+
+- Additional built-in commands like `pwd`, `cd`, and `history`
+- Quoting & escaping (single & double quotes, backslash escaping)
+- I/O redirection (stdout, stderr)
+- Pipelines (built-in and multi-command pipelines)
+- Autocompletion (built-in, external, path)
+- History (list, execute from history, arrow navigation) & history persistence
 
 ## Installation
 
