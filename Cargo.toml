@@ -1,0 +1,8 @@
+[package]
+name = "fsh"
+version = "0.1.0"
+authors = ["fowl-ow <80642246+fowl-ow@users.noreply.github.com>"]
+edition = "2024"
+
+[dependencies]
+nix = { version = "0.31.1", features = ["fs"] }
