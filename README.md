@@ -21,7 +21,7 @@ This is a learning project with the goal of building a small shell in Rust, base
 
 ## Installation
 
-You can either download a binary from the Releases page or build it from source (requires cargo / rust):
+You can either download a binary from the [releases page](https://github.com/fowl-ow/fsh/releases) or build it from source (requires cargo / rust):
 
 ```shell
 git clone https://github.com/fowl-ow/fsh.git
@@ -31,7 +31,9 @@ cargo install --path .
 
 ## Development Setup
 
-Add git hooks
+Development requires [Rust](https://rust-lang.org/).
+
+Add git hooks:
 
 ```shell
 git config core.hooksPath .githooks
