@@ -1,6 +1,6 @@
 # fsh (fowl shell)
 
-This is a learning project with the goal of building a small shell in Rust, based on the [codecrafters challenge](https://app.codecrafters.io/courses/shell/overview).
+This is a learning project with the goal of building a small shell in Rust (based on the [codecrafters challenge](https://app.codecrafters.io/courses/shell/overview)).
 
 ## Features
 
