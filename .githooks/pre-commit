@@ -4,4 +4,4 @@ set -e
 echo "Running pre-commit checks (formatting, linting, licenses)"
 cargo fmt --check
 cargo clippy -- -D warnings
-cargo deny check licenses
+cargo deny -L error check licenses
