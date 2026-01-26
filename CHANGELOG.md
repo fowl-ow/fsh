@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- added: Built-in commands:
+  - `pwd`
+
 ## [0.1.0] - 2026-01-25
 
 - added: Basic REPL (Read-Eval-Print-Loop) with command execution (built-in and path), argument handling (separation by whitespace only)
