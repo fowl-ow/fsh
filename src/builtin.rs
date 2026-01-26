@@ -1,6 +1,36 @@
 use crate::{parser::Word, path::PathVec};
+use std::process;
 
-pub fn echo(source: &str, argv: Vec<Word>) {
+pub enum BuiltinKind {
+    Echo,
+    Exit,
+    Type,
+    // Pwd,
+    // Cd
+}
+
+impl BuiltinKind {
+    pub fn from_name(name: &str) -> Option<BuiltinKind> {
+        match name {
+            "echo" => Some(BuiltinKind::Echo),
+            "exit" => Some(BuiltinKind::Exit),
+            "type" => Some(BuiltinKind::Type),
+            _ => None,
+        }
+    }
+
+    pub fn execute(&self, source: &str, argv: Vec<Word>, path_vec: &PathVec) {
+        match self {
+            Self::Echo => echo(source, argv),
+            Self::Exit => process::exit(0),
+            Self::Type => {
+                type_cmd(source, argv, path_vec);
+            }
+        }
+    }
+}
+
+fn echo(source: &str, argv: Vec<Word>) {
     if argv.len() > 1 {
         let s = argv[1..]
             .iter()
@@ -11,7 +41,7 @@ pub fn echo(source: &str, argv: Vec<Word>) {
     }
 }
 
-pub fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
+fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
     match argv.get(1) {
         None => {}
         Some(word) => {

@@ -1,8 +1,8 @@
 use std::process;
 use std::{os::unix::process::CommandExt, path::Path};
 
+use crate::builtin::BuiltinKind;
 use crate::{
-    builtin,
     parser::{Command, ParsedInput, Word},
     path::PathVec,
 };
@@ -14,11 +14,11 @@ pub fn dispatch(input: ParsedInput, path_vec: &PathVec) -> Result<(), std::io::E
         match cmd {
             Command::Simple { argv } => {
                 let command_name = argv[0].as_str(&source);
-                match command_name {
-                    "exit" => process::exit(0),
-                    "echo" => builtin::echo(&source, argv),
-                    "type" => builtin::type_cmd(&source, argv, path_vec),
-                    non_builtin => match path_vec.get_cmd_in_path(non_builtin) {
+                match BuiltinKind::from_name(command_name) {
+                    Some(builtin) => {
+                        builtin.execute(&source, argv, path_vec);
+                    }
+                    None => match path_vec.get_cmd_in_path(command_name) {
                         Some(cmd_path) => execute(&source, &cmd_path, argv),
                         None => cmd_not_found(command_name),
                     },
