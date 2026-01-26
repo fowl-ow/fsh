@@ -1,9 +1,15 @@
 use std::io::{Write, stdin, stdout};
 
-use crate::{executor, parser, path, scanner};
+use crate::{executor, parser, path::PathVec, scanner};
+
+struct State {
+    path_vec: PathVec,
+}
 
 pub fn run() -> Result<(), std::io::Error> {
-    let path_vec = path::PathVec::new();
+    let state: State = State {
+        path_vec: PathVec::new(),
+    };
 
     loop {
         show_prompt();
@@ -11,7 +17,7 @@ pub fn run() -> Result<(), std::io::Error> {
         let input = get_input();
         let scanned_input = scanner::scan(input);
         let parsed_input = parser::parse(scanned_input);
-        let _ = executor::dispatch(parsed_input, &path_vec);
+        let _ = executor::dispatch(parsed_input, &state.path_vec);
         flush();
     }
 }
