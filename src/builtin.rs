@@ -1,11 +1,11 @@
 use crate::{parser::Word, path::PathVec};
-use std::process;
+use std::{env, process};
 
 pub enum BuiltinKind {
     Echo,
     Exit,
     Type,
-    // Pwd,
+    Pwd,
     // Cd
 }
 
@@ -15,6 +15,7 @@ impl BuiltinKind {
             "echo" => Some(BuiltinKind::Echo),
             "exit" => Some(BuiltinKind::Exit),
             "type" => Some(BuiltinKind::Type),
+            "pwd" => Some(BuiltinKind::Pwd),
             _ => None,
         }
     }
@@ -25,6 +26,9 @@ impl BuiltinKind {
             Self::Exit => process::exit(0),
             Self::Type => {
                 type_cmd(source, argv, path_vec);
+            }
+            Self::Pwd => {
+                pwd();
             }
         }
     }
@@ -53,5 +57,13 @@ fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
                 None => println!("{command_name}: not found"),
             },
         }
+    }
+}
+
+fn pwd() {
+    if let Some(dir) = env::var_os("PWD") {
+        println!("{}", dir.display());
+    } else if let Ok(dir) = env::current_dir() {
+        println!("{}", dir.display());
     }
 }
