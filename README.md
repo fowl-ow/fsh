@@ -9,10 +9,11 @@ This is a learning project with the goal of building a small shell in Rust (base
   - `echo`
   - `exit`
   - `type`
+  - `pwd`
 
 ## Roadmap
 
-- Additional built-in commands like `pwd`, `cd`, and `history`
+- Additional built-in commands like `cd`, and `history`
 - Quoting & escaping (single & double quotes, backslash escaping)
 - I/O redirection (stdout, stderr)
 - Pipelines (built-in and multi-command pipelines)
