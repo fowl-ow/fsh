@@ -42,20 +42,16 @@ fn echo(source: &str, argv: Vec<Word>) {
 }
 
 fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
-    match argv.get(1) {
-        None => {}
-        Some(word) => {
-            let span = word.span;
-            let command_name = &source[span.start..span.end];
-            match command_name {
-                "exit" | "echo" | "type" => {
-                    println!("{command_name} is a shell builtin")
-                }
-                _ => match path_vec.get_cmd_in_path(command_name) {
-                    Some(path) => println!("{command_name} is {}", path.display()),
-                    None => println!("{command_name}: not found"),
-                },
+    if let Some(word) = argv.get(1) {
+        let command_name = word.as_str(source);
+        match BuiltinKind::from_name(command_name) {
+            Some(_) => {
+                println!("{command_name} is a shell builtin")
             }
+            None => match path_vec.get_cmd_in_path(command_name) {
+                Some(path) => println!("{command_name} is {}", path.display()),
+                None => println!("{command_name}: not found"),
+            },
         }
     }
 }
