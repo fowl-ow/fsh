@@ -6,6 +6,10 @@ edition = "2024"
 license = "MPL-2.0"
 repository = "https://github.com/fowl-ow/fsh"
 
+[lints.clippy]
+# pedantic = "warn"
+# cargo = "warn"
+
 [dependencies]
 nix = { version = "0.31.1", features = ["fs"] }
 log = "0.4.29"
