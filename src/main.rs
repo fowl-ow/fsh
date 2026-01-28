@@ -1,5 +1,4 @@
 mod builtin;
-mod command;
 mod executor;
 mod parser;
 mod path;
