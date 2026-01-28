@@ -1,12 +1,16 @@
-use crate::{parser::Word, path::PathVec};
-use std::{env, process};
+use crate::{
+    executor::Outcome,
+    parser::Word,
+    path::PathVec,
+    shell::{Event, ShellError, State},
+};
+use std::path::Path;
 
 pub enum BuiltinKind {
     Echo,
     Exit,
     Type,
     Pwd,
-    // Cd
 }
 
 impl BuiltinKind {
@@ -20,21 +24,31 @@ impl BuiltinKind {
         }
     }
 
-    pub fn execute(&self, source: &str, argv: Vec<Word>, path_vec: &PathVec) {
+    pub fn execute(
+        &self,
+        source: &str,
+        argv: Vec<Word>,
+        state: &State,
+    ) -> Result<Outcome, ShellError> {
         match self {
-            Self::Echo => echo(source, argv),
-            Self::Exit => process::exit(0),
+            Self::Echo => {
+                echo(source, argv)?;
+                Ok(Outcome::None)
+            }
+            Self::Exit => Ok(Outcome::Event(Event::Exit)),
             Self::Type => {
-                type_cmd(source, argv, path_vec);
+                type_cmd(source, argv, &state.path_vec)?;
+                Ok(Outcome::None)
             }
             Self::Pwd => {
-                pwd();
+                print_working_directory(&state.working_dir)?;
+                Ok(Outcome::None)
             }
         }
     }
 }
 
-fn echo(source: &str, argv: Vec<Word>) {
+fn echo(source: &str, argv: Vec<Word>) -> Result<(), ShellError> {
     if argv.len() > 1 {
         let s = argv[1..]
             .iter()
@@ -43,14 +57,15 @@ fn echo(source: &str, argv: Vec<Word>) {
             .join(" ");
         println!("{}", s);
     }
+    Ok(())
 }
 
-fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
+fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) -> Result<(), ShellError> {
     if let Some(word) = argv.get(1) {
         let command_name = word.as_str(source);
         match BuiltinKind::from_name(command_name) {
             Some(_) => {
-                println!("{command_name} is a shell builtin")
+                println!("{command_name} is a shell builtin");
             }
             None => match path_vec.get_cmd_in_path(command_name) {
                 Some(path) => println!("{command_name} is {}", path.display()),
@@ -58,12 +73,10 @@ fn type_cmd(source: &str, argv: Vec<Word>, path_vec: &PathVec) {
             },
         }
     }
+    Ok(())
 }
 
-fn pwd() {
-    if let Some(dir) = env::var_os("PWD") {
-        println!("{}", dir.display());
-    } else if let Ok(dir) = env::current_dir() {
-        println!("{}", dir.display());
-    }
+fn print_working_directory(path: &Path) -> Result<(), ShellError> {
+    println!("{}", path.display());
+    Ok(())
 }
